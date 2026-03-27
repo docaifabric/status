@@ -16,6 +16,7 @@ status-website:
   introTitle: "DocAI Fabric Service Status"
   introMessage: "Real-time availability for DocAI Fabric environments."
   theme: light
+  customCss: "footer p:has(a[href*='upptime']) { display: none !important; }"
   navbar:
     - title: Status
       href: /
