@@ -1,7 +1,11 @@
 owner: docaifabric
 repo: status
 
-I n
+sites:
+  - name: DocAI Fabric (Production)
+    url: https://app.docaifabric.com/health
+  - name: DocAI Fabric (Test)
+    url: https://test.docaifabric.com/health
 
 assignees:
   - docaifabric
