@@ -16,10 +16,13 @@ status-website:
   introTitle: "DocAI Fabric Service Status"
   introMessage: "Real-time availability for DocAI Fabric environments."
   theme: light
-  customCss: "footer p { display: none !important; }"
+  css: "footer { display: none !important; }"
   navbar:
     - title: Status
       href: /
+
+i18n:
+  footer: "Powered by [Upptime](https://upptime.js.org)"
 
 notifications:
   - type: telegram
