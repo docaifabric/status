@@ -1,11 +1,7 @@
 owner: docaifabric
 repo: status
 
-sites:
-  - name: DocAI Fabric (Production)
-    url: https://app.docaifabric.com/health
-  - name: DocAI Fabric (Test)
-    url: https://test.docaifabric.com/health
+I n
 
 assignees:
   - docaifabric
@@ -16,7 +12,7 @@ status-website:
   introTitle: "DocAI Fabric Service Status"
   introMessage: "Real-time availability for DocAI Fabric environments."
   theme: light
-  customCss: "footer p:has(a[href*='upptime']) { display: none !important; }"
+  customCss: "footer p { display: none !important; }"
   navbar:
     - title: Status
       href: /
