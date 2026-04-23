@@ -1,7 +1,7 @@
 url: https://test.docaifabric.com/health
-status: down
-code: 0
-responseTime: 0
-lastUpdated: 2026-04-23T16:09:20.282Z
+status: up
+code: 200
+responseTime: 432
+lastUpdated: 2026-04-23T23:36:34.078Z
 startTime: 2026-03-27T21:33:29.698Z
 generator: Upptime <https://github.com/upptime/upptime>
