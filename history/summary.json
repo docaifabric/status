@@ -10,11 +10,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 461,
-    "timeDay": 984,
-    "timeWeek": 574,
-    "timeMonth": 461,
-    "timeYear": 461,
+    "time": 459,
+    "timeDay": 676,
+    "timeWeek": 571,
+    "timeMonth": 459,
+    "timeYear": 459,
     "dailyMinutesDown": {}
   },
   {
@@ -23,16 +23,18 @@
     "icon": "https://icons.duckduckgo.com/ip3/test.docaifabric.com.ico",
     "slug": "doc-ai-fabric-test",
     "status": "up",
-    "uptime": "100.00%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
-    "uptimeYear": "100.00%",
-    "time": 378,
-    "timeDay": 241,
-    "timeWeek": 416,
-    "timeMonth": 378,
-    "timeYear": 378,
-    "dailyMinutesDown": {}
+    "uptime": "98.85%",
+    "uptimeDay": "68.94%",
+    "uptimeWeek": "95.56%",
+    "uptimeMonth": "98.85%",
+    "uptimeYear": "98.85%",
+    "time": 380,
+    "timeDay": 337,
+    "timeWeek": 420,
+    "timeMonth": 380,
+    "timeYear": 380,
+    "dailyMinutesDown": {
+      "2026-04-23": 447
+    }
   }
 ]
