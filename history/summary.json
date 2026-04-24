@@ -23,18 +23,18 @@
     "icon": "https://icons.duckduckgo.com/ip3/test.docaifabric.com.ico",
     "slug": "doc-ai-fabric-test",
     "status": "down",
-    "uptime": "98.86%",
-    "uptimeDay": "68.94%",
-    "uptimeWeek": "95.56%",
-    "uptimeMonth": "98.86%",
-    "uptimeYear": "98.86%",
+    "uptime": "98.82%",
+    "uptimeDay": "67.83%",
+    "uptimeWeek": "95.40%",
+    "uptimeMonth": "98.82%",
+    "uptimeYear": "98.82%",
     "time": 380,
     "timeDay": 432,
     "timeWeek": 420,
     "timeMonth": 380,
     "timeYear": 380,
     "dailyMinutesDown": {
-      "2026-04-24": 0,
+      "2026-04-24": 16,
       "2026-04-23": 447
     }
   }
