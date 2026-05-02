@@ -4,8 +4,9 @@ repo: status
 sites:
   - name: DocAI Fabric (Production)
     url: https://app.docaifabric.com/health
-  - name: DocAI Fabric (Test)
-    url: https://test.docaifabric.com/health
+  # Temporarily disabled — uncomment to re-enable monitoring of the Test environment.
+  # - name: DocAI Fabric (Test)
+  #   url: https://test.docaifabric.com/health
 
 assignees:
   - docaifabric
