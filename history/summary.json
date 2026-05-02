@@ -10,33 +10,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 459,
-    "timeDay": 427,
-    "timeWeek": 476,
-    "timeMonth": 455,
-    "timeYear": 459,
+    "time": 455,
+    "timeDay": 366,
+    "timeWeek": 454,
+    "timeMonth": 450,
+    "timeYear": 455,
     "dailyMinutesDown": {}
-  },
-  {
-    "name": "DocAI Fabric (Test)",
-    "url": "https://test.docaifabric.com/health",
-    "icon": "https://icons.duckduckgo.com/ip3/test.docaifabric.com.ico",
-    "slug": "doc-ai-fabric-test",
-    "status": "up",
-    "uptime": "95.26%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "91.62%",
-    "uptimeMonth": "94.52%",
-    "uptimeYear": "95.26%",
-    "time": 1500,
-    "timeDay": 575,
-    "timeWeek": 546,
-    "timeMonth": 1885,
-    "timeYear": 1500,
-    "dailyMinutesDown": {
-      "2026-04-25": 952,
-      "2026-04-24": 1001,
-      "2026-04-23": 447
-    }
   }
 ]
