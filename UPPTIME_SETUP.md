@@ -10,9 +10,11 @@ Anyone can subscribe on the status page to receive an email when an incident sta
 or is resolved. This is built from two pieces, since Upptime has no native
 subscriber feature:
 
-1. **Subscribe form** — embedded in the status page via `customFootHtml` in
-   `.upptimerc.yml`. It posts to [Buttondown](https://buttondown.com), which handles
-   double opt-in confirmation and puts an unsubscribe link in every email.
+1. **Subscribe form** — injected into the status page via the `js` option in
+   `.upptimerc.yml` (the published `@upptime/status-page` npm package, 1.17.0, predates
+   the `customFootHtml` option — switch back to that once a newer version is published).
+   It posts to [Buttondown](https://buttondown.com), which handles double opt-in
+   confirmation and puts an unsubscribe link in every email.
 2. **Incident emails** — `.github/workflows/notify-subscribers.yml` fires when an
    Upptime incident issue is opened or closed (issues labeled with a site slug,
    e.g. `doc-ai-fabric-production`) and sends a broadcast to all subscribers via

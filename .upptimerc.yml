@@ -26,20 +26,24 @@ status-website:
     - title: Subscribe
       href: "#subscribe"
   # Public email subscriptions via Buttondown (see UPPTIME_SETUP.md → "Subscriber notifications").
+  # Injected via `js` because the published @upptime/status-page npm package (1.17.0)
+  # predates customFootHtml support. Appended outside #sapper so hydration can't remove it.
   # Replace "docaifabric-status" with the actual Buttondown username if it differs.
-  customFootHtml: |
-    <div id="subscribe" style="max-width: 720px; margin: 2rem auto; padding: 1.5rem; background: #fff; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center;">
-      <h2 style="margin-top: 0;">Get status updates</h2>
-      <p>Receive an email when an incident starts or is resolved. Unsubscribe anytime via the link in any email.</p>
-      <form action="https://buttondown.com/api/emails/embed-subscribe/docaifabric-status" method="post" target="_blank">
-        <input type="email" name="email" placeholder="you@example.com" required
-               style="padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 0.25rem; min-width: 240px;" />
-        <button type="submit"
-                style="padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; background: #1f2937; color: #fff; cursor: pointer;">
-          Subscribe
-        </button>
-      </form>
-    </div>
+  js: |
+    window.addEventListener("DOMContentLoaded", function () {
+      var box = document.createElement("div");
+      box.id = "subscribe";
+      box.style.cssText = "max-width:720px;margin:2rem auto;padding:1.5rem;background:#fff;border-radius:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);text-align:center;";
+      box.innerHTML =
+        '<h2 style="margin-top:0">Get status updates</h2>' +
+        '<p>Receive an email when an incident starts or is resolved. Unsubscribe anytime via the link in any email.</p>' +
+        '<form action="https://buttondown.com/api/emails/embed-subscribe/docaifabric-status" method="post" target="_blank">' +
+        '<input type="email" name="email" placeholder="you@example.com" required ' +
+        'style="padding:0.5rem 0.75rem;border:1px solid #ccc;border-radius:0.25rem;min-width:240px" />' +
+        '<button type="submit" style="padding:0.5rem 1rem;border:none;border-radius:0.25rem;background:#1f2937;color:#fff;cursor:pointer">Subscribe</button>' +
+        '</form>';
+      document.body.appendChild(box);
+    });
 
 i18n:
   footer: "Powered by [Upptime](https://upptime.js.org)"
