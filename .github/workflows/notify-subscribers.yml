@@ -1,0 +1,54 @@
+name: Notify Subscribers
+on:
+  issues:
+    types: [opened, closed]
+
+permissions:
+  issues: read
+
+jobs:
+  notify:
+    # Upptime incident issues are labeled with the site slug (e.g. doc-ai-fabric-production).
+    if: contains(join(github.event.issue.labels.*.name, ','), 'doc-ai-fabric')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email to subscribers via Buttondown
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_ACTION: ${{ github.event.action }}
+        run: |
+          if [ -z "$BUTTONDOWN_API_KEY" ]; then
+            echo "BUTTONDOWN_API_KEY secret is not set; skipping subscriber notification."
+            exit 0
+          fi
+          python3 - <<'EOF'
+          import json, os, urllib.request
+
+          title = os.environ["ISSUE_TITLE"]
+          url = os.environ["ISSUE_URL"]
+          resolved = os.environ["ISSUE_ACTION"] == "closed"
+
+          subject = f"✅ Resolved: {title}" if resolved else title
+          body = (
+              f"**{'Incident resolved' if resolved else 'Incident started'}:** {title}\n\n"
+              f"Live status: https://status.docaifabric.com\n\n"
+              f"Incident details: {url}\n"
+          )
+
+          req = urllib.request.Request(
+              "https://api.buttondown.com/v1/emails",
+              data=json.dumps({
+                  "subject": subject,
+                  "body": body,
+                  "status": "about_to_send",
+              }).encode(),
+              headers={
+                  "Authorization": "Token " + os.environ["BUTTONDOWN_API_KEY"],
+                  "Content-Type": "application/json",
+              },
+          )
+          with urllib.request.urlopen(req) as resp:
+              print("Buttondown response:", resp.status)
+          EOF
