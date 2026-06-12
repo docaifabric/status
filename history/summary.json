@@ -10,13 +10,31 @@
     "uptimeWeek": "99.63%",
     "uptimeMonth": "99.92%",
     "uptimeYear": "99.97%",
-    "time": 482,
-    "timeDay": 383,
-    "timeWeek": 356,
-    "timeMonth": 511,
-    "timeYear": 482,
+    "time": 478,
+    "timeDay": 320,
+    "timeWeek": 338,
+    "timeMonth": 502,
+    "timeYear": 478,
     "dailyMinutesDown": {
       "2026-06-12": 37
     }
+  },
+  {
+    "name": "DocAI Fabric (Licensing)",
+    "url": "https://license.docaifabric.com/health",
+    "icon": "https://icons.duckduckgo.com/ip3/license.docaifabric.com.ico",
+    "slug": "doc-ai-fabric-licensing",
+    "status": "up",
+    "uptime": "100.00%",
+    "uptimeDay": "100.00%",
+    "uptimeWeek": "100.00%",
+    "uptimeMonth": "100.00%",
+    "uptimeYear": "100.00%",
+    "time": 117,
+    "timeDay": 117,
+    "timeWeek": 117,
+    "timeMonth": 117,
+    "timeYear": 117,
+    "dailyMinutesDown": {}
   }
 ]
