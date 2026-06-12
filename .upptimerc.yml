@@ -7,6 +7,8 @@ sites:
   # Temporarily disabled — uncomment to re-enable monitoring of the Test environment.
   # - name: DocAI Fabric (Test)
   #   url: https://test.docaifabric.com/health
+  - name: DocAI Fabric (Licensing)
+    url: https://license.docaifabric.com/health
 
 assignees:
   - docaifabric
