@@ -4,10 +4,14 @@ on:
     types: [opened, closed]
   workflow_dispatch:
     inputs:
-      dry_run:
-        description: "Create the email as a Buttondown draft instead of sending it"
-        type: boolean
-        default: true
+      mode:
+        description: "What a manual run should do"
+        type: choice
+        default: diagnose
+        options:
+          - diagnose # read-only: report newsletter and subscriber counts
+          - draft # stage a Buttondown draft, mail nobody
+          - send # really send, exactly as a live incident would
 
 permissions:
   issues: read
@@ -27,7 +31,7 @@ jobs:
           ISSUE_TITLE: ${{ github.event.issue.title || '🛠️ Test notification (manual run)' }}
           ISSUE_URL: ${{ github.event.issue.html_url || 'https://github.com/docaifabric/status' }}
           ISSUE_ACTION: ${{ github.event.action }}
-          DRY_RUN: ${{ inputs.dry_run }}
+          MODE: ${{ inputs.mode }}
         run: |
           if [ -z "$BUTTONDOWN_API_KEY" ]; then
             echo "BUTTONDOWN_API_KEY secret is not set; skipping subscriber notification."
@@ -36,11 +40,50 @@ jobs:
           python3 - <<'EOF'
           import json, os, urllib.error, urllib.request
 
+          API = "https://api.buttondown.com/v1"
+          KEY = os.environ["BUTTONDOWN_API_KEY"]
+          # An issues-triggered run has no MODE and must always really send.
+          mode = os.environ.get("MODE") or "send"
+
+
+          def call(method, path, payload=None):
+              req = urllib.request.Request(
+                  API + path,
+                  data=json.dumps(payload).encode() if payload is not None else None,
+                  headers={
+                      "Authorization": "Token " + KEY,
+                      "Content-Type": "application/json",
+                  },
+                  method=method,
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as resp:
+                      return resp.status, json.loads(resp.read().decode() or "{}")
+              except urllib.error.HTTPError as e:
+                  # Buttondown explains every rejection in the response body,
+                  # which urlopen discards when it raises. Read it so failures
+                  # are diagnosable instead of a bare "400: Bad Request".
+                  return e.code, {"error_body": e.read().decode("utf-8", "replace")}
+              except urllib.error.URLError as e:
+                  return None, {"error_body": f"could not reach Buttondown: {e.reason}"}
+
+
+          if mode == "diagnose":
+              for path in (
+                  "/newsletters",
+                  "/subscribers",
+                  "/subscribers?type=regular",
+                  "/subscribers?type=unactivated",
+              ):
+                  code, data = call("GET", path)
+                  if isinstance(data, dict) and "results" in data:
+                      data = {"count": data.get("count"), "returned": len(data["results"])}
+                  print(f"GET {path} -> {code}: {json.dumps(data)[:1000]}")
+              raise SystemExit(0)
+
           title = os.environ["ISSUE_TITLE"]
           url = os.environ["ISSUE_URL"]
           resolved = os.environ["ISSUE_ACTION"] == "closed"
-          # A manual run must never mail subscribers, so it only stages a draft.
-          dry_run = os.environ.get("DRY_RUN") == "true"
 
           subject = f"✅ Resolved: {title}" if resolved else title
           body = (
@@ -49,31 +92,12 @@ jobs:
               f"Incident details: {url}\n"
           )
 
-          payload = {
-              "subject": subject,
-              "body": body,
-              "status": "draft" if dry_run else "about_to_send",
-          }
-          req = urllib.request.Request(
-              "https://api.buttondown.com/v1/emails",
-              data=json.dumps(payload).encode(),
-              headers={
-                  "Authorization": "Token " + os.environ["BUTTONDOWN_API_KEY"],
-                  "Content-Type": "application/json",
-              },
-          )
-          try:
-              with urllib.request.urlopen(req, timeout=30) as resp:
-                  print(f"Buttondown accepted the email ({payload['status']}):", resp.status)
-          except urllib.error.HTTPError as e:
-              # Buttondown explains every rejection in the response body, which
-              # urlopen discards when it raises. Read it so the failure is
-              # diagnosable instead of a bare "HTTP Error 400: Bad Request".
-              print(f"Buttondown rejected the email: HTTP {e.code} {e.reason}")
-              print("Response body:", e.read().decode("utf-8", "replace"))
-              print("Request status field:", payload["status"])
-              raise SystemExit(1)
-          except urllib.error.URLError as e:
-              print("Could not reach Buttondown:", e.reason)
+          status = "draft" if mode == "draft" else "about_to_send"
+          code, data = call("POST", "/emails", {"subject": subject, "body": body, "status": status})
+          if code is not None and 200 <= code < 300:
+              print(f"Buttondown accepted the email ({status}): HTTP {code}")
+          else:
+              print(f"Buttondown rejected the email ({status}): HTTP {code}")
+              print("Response body:", data.get("error_body"))
               raise SystemExit(1)
           EOF
