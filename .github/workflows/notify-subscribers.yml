@@ -79,6 +79,12 @@ jobs:
                   if isinstance(data, dict) and "results" in data:
                       data = {"count": data.get("count"), "returned": len(data["results"])}
                   print(f"GET {path} -> {code}: {json.dumps(data)[:1000]}")
+              # Deliberately invalid, and missing subject/body too, so the
+              # request cannot create or send anything. Buttondown validates
+              # every field at once, so the rejection enumerates the status
+              # values the API actually accepts.
+              code, data = call("POST", "/emails", {"status": "__probe_invalid__"})
+              print(f"POST /emails (probe) -> {code}: {json.dumps(data)[:2000]}")
               raise SystemExit(0)
 
           title = os.environ["ISSUE_TITLE"]
