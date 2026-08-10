@@ -53,6 +53,11 @@ jobs:
                   headers={
                       "Authorization": "Token " + KEY,
                       "Content-Type": "application/json",
+                      # Buttondown refuses status "about_to_send" without this
+                      # ("sending_requires_confirmation"), a one-time interlock
+                      # so an API key cannot mail subscribers by accident. It is
+                      # why this workflow had never once succeeded.
+                      "X-Buttondown-Live-Dangerously": "true",
                   },
                   method=method,
               )
