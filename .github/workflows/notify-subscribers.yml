@@ -73,12 +73,14 @@ jobs:
               # subscriber address or an account secret — only counts, and
               # only newsletter fields describing send eligibility.
               SAFE = ("plan", "tier", "status", "enabled", "verified", "domain",
-                      "limit", "count", "paused", "trial", "active", "type")
+                      "limit", "paused", "trial", "active", "blocked", "suspend")
 
               def redact(obj):
+                  # Drop non-matching keys entirely rather than listing them as
+                  # redacted, so the interesting fields survive truncation.
                   return {
-                      k: (v if any(s in k.lower() for s in SAFE) else "<redacted>")
-                      for k, v in obj.items()
+                      k: v for k, v in obj.items()
+                      if any(s in k.lower() for s in SAFE) and not k.startswith("custom_")
                   }
 
               for path in (
