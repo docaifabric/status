@@ -69,6 +69,18 @@ jobs:
 
 
           if mode == "diagnose":
+              # This log is public, so never print a field that could carry a
+              # subscriber address or an account secret — only counts, and
+              # only newsletter fields describing send eligibility.
+              SAFE = ("plan", "tier", "status", "enabled", "verified", "domain",
+                      "limit", "count", "paused", "trial", "active", "type")
+
+              def redact(obj):
+                  return {
+                      k: (v if any(s in k.lower() for s in SAFE) else "<redacted>")
+                      for k, v in obj.items()
+                  }
+
               for path in (
                   "/newsletters",
                   "/subscribers",
@@ -77,8 +89,11 @@ jobs:
               ):
                   code, data = call("GET", path)
                   if isinstance(data, dict) and "results" in data:
-                      data = {"count": data.get("count"), "returned": len(data["results"])}
-                  print(f"GET {path} -> {code}: {json.dumps(data)[:1000]}")
+                      summary = {"count": data.get("count"), "returned": len(data["results"])}
+                      if path == "/newsletters" and data["results"]:
+                          summary["newsletter"] = redact(data["results"][0])
+                      data = summary
+                  print(f"GET {path} -> {code}: {json.dumps(data)[:2000]}")
               # Deliberately invalid, and missing subject/body too, so the
               # request cannot create or send anything. Buttondown validates
               # every field at once, so the rejection enumerates the status
